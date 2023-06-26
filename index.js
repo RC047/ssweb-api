@@ -22,7 +22,7 @@ app.all('/', async (req, res, next) => {
 	let { url, full } = req.query
 	if (!url) return res.status(403).send({ status: res.statusCode, message: 'Missing url parameter' })
 	let image = await ssweb(url, { full: Boolean(full) })
-	if (typeof image !== 'buffer') return res.status(403).send({ status: res.statusCode, message: 'Forbidden' })
+	if (!Buffer.isBuffer(image)) return res.status(403).send({ status: res.statusCode, message: 'Failed to screenshot' })
 	return res.status(200).send(image)
 })
 app.listen(port, () => console.info('Server running on port', port));

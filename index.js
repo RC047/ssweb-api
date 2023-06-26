@@ -19,9 +19,9 @@ app.use(parser.json())
 app.use(parser.urlencoded({ extended: true }))
 
 app.all('/', async (req, res, next) => {
-	let { url, delay } = req.query
+	let { url, full } = req.query
 	if (!url) return res.status(403).send({ status: res.statusCode, message: 'Missing url parameter' })
-	let image = await ssweb(url, delay ? { delay: Number(delay) } : null)
+	let image = await ssweb(url, { full: Boolean(full) })
 	if (typeof image !== 'buffer') return res.status(403).send({ status: res.statusCode, message: 'Forbidden' })
 	return res.status(200).send(image)
 })

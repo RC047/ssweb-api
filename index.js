@@ -20,7 +20,8 @@ app.use(parser.urlencoded({ extended: true }))
 
 app.all('/', async (req, res, next) => {
 	let { url, delay } = req.query
-	let image = await ssweb(url)
+	if (!url) return res.status(403).send({ status: res.statusCode, message: 'Missing url parameter' })
+	let image = await ssweb(url, delay ? { delay: Number(delay) } : null)
 	if (typeof image !== 'buffer') return res.status(403).send({ status: res.statusCode, message: 'Forbidden' })
 	return res.status(200).send(image)
 })

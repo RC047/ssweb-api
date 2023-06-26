@@ -19,7 +19,11 @@ module.exports = async function(url, options = {}) {
 		defaultViewport: {
 			width: 1920,
 			height: 1080
-		}
+		},
+		args: [
+			'--no-sandbox',
+			'--disable-setuid-sandbox'
+		]
 	})
 	let page = await browser.newPage()
 	let deviceType = options.deviceType || 'iPhone X'

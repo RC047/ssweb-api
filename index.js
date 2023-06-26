@@ -21,7 +21,7 @@ app.use(parser.urlencoded({ extended: true }))
 app.all('/', async (req, res, next) => {
 	let { url, full } = req.query
 	if (!url) return res.status(403).send({ status: res.statusCode, message: 'Missing url parameter' })
-	let image = await ssweb(encodeURIComponent(url), { full: Boolean(full) })
+	let image = await ssweb(decodeURIComponent(url), { full: Boolean(full) })
 	if (!Buffer.isBuffer(image)) return res.status(403).send({ status: res.statusCode, message: 'Failed to screenshot' })
 	let outputPath = path.resolve(`./public/${randomInt(0, 10000)}.jpeg`)
 	await fs.writeFileSync(outputPath, image)

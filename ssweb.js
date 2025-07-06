@@ -29,7 +29,7 @@ module.exports = async function(url, options = {}) {
 	let deviceType = options.deviceType || 'iPhone X'
 	if (!(deviceType in puppeteer.devices)) throw 'Device type is not supported!'
 	if (options.isMobile) await page.emulate(puppeteer.devices[deviceType])
-	else await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36')
+	// else await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36')
 	await page.goto(url, { waitUntil: 'networkidle0' })
 	if (options.full) await page.waitForTimeout(15000)
 	let buffer = await page.screenshot({ type: 'jpeg', quality: 100, fullPage: options.full })

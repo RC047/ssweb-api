@@ -1,4 +1,4 @@
-const { headless, defaultViewport, args, executablePath } = require('@sparticuz/chromium')
+const { headless, args, executablePath } = require('@sparticuz/chromium')
 const puppeteer = require('puppeteer')
 const fetch = require('node-fetch')
 
@@ -17,8 +17,11 @@ module.exports = async function(url, options = {}) {
 	if (typeof url == 'undefined' || !isURL(url)) throw 'Invalid URL'
 	let browser = await puppeteer.launch({
 		headless,
-		defaultViewport,
 		args,
+		defaultViewport: {
+			width: 1920,
+			height: 1080
+		},
 		executablePath: await executablePath()
 	})
 	let page = await browser.newPage()

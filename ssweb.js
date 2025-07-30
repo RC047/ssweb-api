@@ -35,5 +35,6 @@ module.exports = async function(url, options = {}) {
 	if (options.full) await page.waitForTimeout(15000)
 	let buffer = await page.screenshot({ type: 'jpeg', quality: 100, fullPage: options.full })
 	await page.close()
+	await browser.close()
 	return buffer
 }

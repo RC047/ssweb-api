@@ -1,5 +1,6 @@
 const { headless, args, executablePath } = require('@sparticuz/chromium')
-const puppeteer = require('puppeteer')
+const puppeteer = require('puppeteer-extra')
+const stealthPlugin = require('puppeteer-extra-plugin-stealth')
 const fetch = require('node-fetch')
 
 
@@ -15,6 +16,7 @@ function isURL(url) {
 
 module.exports = async function(url, options = {}) {
 	if (typeof url == 'undefined' || !isURL(url)) throw 'Invalid URL'
+        puppeteer.use(stealthPlugin())
 	let browser = await puppeteer.launch({
 		headless,
 		args,
@@ -25,10 +27,10 @@ module.exports = async function(url, options = {}) {
 		executablePath: await executablePath()
 	})
 	let page = await browser.newPage()
+	page.on('dialog', (dialog) => dialog.dismiss()) // ignore all dialogs
 	let deviceType = options.deviceType || 'iPhone X'
 	if (!(deviceType in puppeteer.KnownDevices)) throw 'Device type is not supported!'
 	if (options.isMobile) await page.emulate(puppeteer.KnownDevices[deviceType])
-	else await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36')
 	await page.goto(url, { waitUntil: 'networkidle0' })
 	if (options.full) await page.waitForTimeout(15000)
 	let buffer = await page.screenshot({ type: 'jpeg', quality: 100, fullPage: options.full })

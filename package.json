@@ -40,8 +40,5 @@
     "ssl-express-www": "^3.2.1",
     "yargs": "^17.6.2"
   },
-  "pkg": {
-    "assets": "node_modules/puppeteer-extra-plugin-stealth/**/*.*"
-  },
   "homepage": "https://github.com/RC047/ssweb-api#readme"
 }
